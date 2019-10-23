@@ -1,0 +1,5 @@
+{
+  "verbose": false,
+  "watch": ["test"],
+  "delay": 1000
+}
