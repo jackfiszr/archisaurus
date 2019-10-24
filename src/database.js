@@ -34,14 +34,6 @@ const Database = class {
 			}
 			this.__collections[collection] = collectionDescription
 			this.__data[collection] = {}
-			this.__indexes[collection] = {}
-
-			/**
-			this.__collections[collection].forEach(index => {
-				this.__indexes.values[collection] = {}
-				this.__indexes.values[collection][index.name] = {}
-			})
-			 */
 		})
 
 		this.__restore()
@@ -75,8 +67,19 @@ const Database = class {
 		})
 	}
 
-	transactionsStart() {
+	transactionsStart(callback) {
 		this.__transactionsDepth++
+		if (callback) {
+			try {
+				const afterCommit = callback(this, this.__transactionsDepth)
+				this.transactionsCommit()
+				afterCommit && afterCommit()
+			} catch (e) {
+				//console.error(e)
+				this.transactionsRollback()
+				throw new Error(e)
+			}
+		}
 	}
 
 	transactionsCommit() {
@@ -92,14 +95,26 @@ const Database = class {
 
 			const date = new Date().toISOString().split('T')[0]
 			const transactionsFileName = `${this.__storageDir}/transactions/${date}.txt`
-			fs.appendFileSync(transactionsFileName, JSON.stringify(this.__transactionsData) + '\n')
+			fs.appendFileSync(
+				transactionsFileName,
+				JSON.stringify(this.__transactionsData) + '\n'
+			)
 			this.__transactionsData = {}
 		}
+	}
+
+	transactionsRollback() {
+		this.__transactionsData = {}
+		this.__transactionsDepth = 0
 	}
 
 	post(collection, record = {}) {
 		if (this.__transactionsDepth === 0) {
 			throw new Error(`start transaction before doing post`)
+		}
+		if (!this.__collections[collection]) {
+			//console.table(this.__collections)
+			throw new Error(`collection ${collection} not exists`)
 		}
 		const doAfter = this.__collections[collection].onPost(this, record)
 		record._ = this.__getNextGuid()

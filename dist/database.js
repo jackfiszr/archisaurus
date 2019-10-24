@@ -61,13 +61,6 @@ function () {
 
       _this.__collections[collection] = collectionDescription;
       _this.__data[collection] = {};
-      _this.__indexes[collection] = {};
-      /**
-      this.__collections[collection].forEach(index => {
-      	this.__indexes.values[collection] = {}
-      	this.__indexes.values[collection][index.name] = {}
-      })
-       */
     });
 
     this.__restore();
@@ -100,8 +93,20 @@ function () {
 
   _createClass(Database, [{
     key: "transactionsStart",
-    value: function transactionsStart() {
+    value: function transactionsStart(callback) {
       this.__transactionsDepth++;
+
+      if (callback) {
+        try {
+          var afterCommit = callback(this, this.__transactionsDepth);
+          this.transactionsCommit();
+          afterCommit && afterCommit();
+        } catch (e) {
+          //console.error(e)
+          this.transactionsRollback();
+          throw new Error(e);
+        }
+      }
     }
   }, {
     key: "transactionsCommit",
@@ -125,12 +130,23 @@ function () {
       }
     }
   }, {
+    key: "transactionsRollback",
+    value: function transactionsRollback() {
+      this.__transactionsData = {};
+      this.__transactionsDepth = 0;
+    }
+  }, {
     key: "post",
     value: function post(collection) {
       var record = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
       if (this.__transactionsDepth === 0) {
         throw new Error("start transaction before doing post");
+      }
+
+      if (!this.__collections[collection]) {
+        //console.table(this.__collections)
+        throw new Error("collection ".concat(collection, " not exists"));
       }
 
       var doAfter = this.__collections[collection].onPost(this, record);

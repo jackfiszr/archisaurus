@@ -1,32 +1,6 @@
-const { Archivarius } = require('../dist')
-const dir = `${__dirname}/.local`
 const fs = require('fs')
-const database = new Archivarius(
-	{
-		users: {
-			onPost: (database, record) => {
-				record.createdAt = Date.now()
-				return (database, record) => {
-					if (record.couponName) {
-						const coupons = database.search('coupons', { name: record.couponName })
-						if (coupons[0].count === coupons[0].countUsed) {
-							throw new Error(`coupon ${record.couponName} is exceed its limit`)
-						}
-						coupons[0].countUsed++
-						database.put('coupons', coupons[0])
-					}
-				}
-			},
-		},
-		coupons: {
-			onPost(database, record) {
-				record.countUsed = 0
-			},
-		},
-	},
-	dir,
-)
 const assert = require('assert')
+const { database, dir } = require('./lib/database1')
 const savedData = {}
 
 describe('Database', function() {

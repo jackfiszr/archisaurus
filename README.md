@@ -48,29 +48,53 @@ const storageDir = `${__dirname}/../archivarius`
 
 const db = new Archivarius(collections, storageDir)
 
-const userNew = {username: 'john', password: '555555'}
-const user = db.post('users', userNew)
+const userNew = { username: 'john', password: '555555'}
 
-user.email = 'john@gmail.com'
-db.put('users', user)
+// every data changing operation should be wrapped in transaction
+// option 1 - callback
+// this option fill 
+db.transactionsStart(() => {
+  const user = db.post('users', userNew)
+  return () => {
+    console.log('you will see me after transaction is committed')
+  }
+})
+
+// option 2 - direct use, please carefully catch exceptions you will have to rollback transactions manually 
 const query = { username: 'john' }
 const users = db.search('users', query)
-db.delete('users', user._)
+
+db.transactionsStart()
+try {
+  users[0].email = 'john@gmail.com'
+  db.put('users', users[0])
+} catch (e) {
+  console.error(e)
+  db.transactionsRollback()
+}
+db.transactionsCommit()
+
+const query = { username: 'john' }
+const users = db.search('users', query)
+db.delete('users', users[0]._)
 ```
  
 ## Best Practice 
  
-##Road Map
+## Road Map
  - Indexes 
  - Hooks
  - Full test coverage
  
-##Changelog
- 
-###0.0.9
+## Changelog
+
+### 0.1.0 
+- transactions hooks
+
+### 0.0.9
 - documentation updates
 - bug fixes
 - tests
 - development tools improvements
-###0.0.8
+### 0.0.8
  - readme updates and some refactoring 
