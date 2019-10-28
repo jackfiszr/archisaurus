@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../nodecitadel-matchbox/.idea/@nodecitadelmatchbox.iml" filepath="$PROJECT_DIR$/../nodecitadel-matchbox/.idea/@nodecitadelmatchbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/../@nodecitadel:publicarius/.idea/@nodecitadelpublicarius.iml" filepath="$PROJECT_DIR$/../@nodecitadel:publicarius/.idea/@nodecitadelpublicarius.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../apiarius/.idea/apitizer.iml" filepath="$PROJECT_DIR$/../apiarius/.idea/apitizer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/archivarius.iml" filepath="$PROJECT_DIR$/.idea/archivarius.iml" />
     </modules>
   </component>
