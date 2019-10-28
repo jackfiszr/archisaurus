@@ -102,7 +102,7 @@ function () {
           this.transactionsCommit();
           afterCommit && afterCommit();
         } catch (e) {
-          //console.error(e)
+          console.error(e);
           this.transactionsRollback();
           throw new Error(e);
         }
@@ -145,7 +145,6 @@ function () {
       }
 
       if (!this.__collections[collection]) {
-        //console.table(this.__collections)
         throw new Error("collection ".concat(collection, " not exists"));
       }
 
