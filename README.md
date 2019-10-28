@@ -9,7 +9,7 @@ Fast and reliable file based database for microservices
 good enough to handle 100+ mln records per collection
 
   
-##Highlights
+## Highlights
 
 - synchronous — yep, to much chaos in this world and sometimes we need to get back in sync 
 - reliable — you can hard switch off server and this will be fine handled 
