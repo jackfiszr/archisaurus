@@ -132,6 +132,7 @@ const Database = class {
 		const doAfter = this.__collections[collection].onPut(this, record)
 		this.__transactionsData[record._] = { collection, record }
 		doAfter && doAfter(this, { ...record })
+
 		return this.__transactionsData[record._].record
 	}
 
@@ -150,6 +151,7 @@ const Database = class {
 		const doAfter = this.__collections[collection].onPut(this, record)
 		this.__transactionsData[record._] = { collection, record: recordPatch }
 		doAfter && doAfter(this, { ...recordPatch })
+
 		return this.__transactionsData[record._].record
 	}
 
@@ -170,7 +172,10 @@ const Database = class {
 			throw new Error(`start transaction before doing delete`)
 		}
 		this.__transactionsData[_] = { collection, record: { _ }, delete: true }
+		
+		return this.__transactionsData[record._].record
 	}
+
 
 	filter(collection, filter = () => true) {
 		return Object.values(this.__data[collection]).filter(filter)
