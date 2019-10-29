@@ -1,6 +1,6 @@
 {
   "name": "archivarius",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "high performance and dependency free database for microservices",
   "main": "dist/index.js",
   "scripts": {

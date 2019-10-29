@@ -92,6 +92,9 @@ db.delete('users', users[0]._)
  
 ## Changelog
 
+### 0.1.13
+- now storage dir will be created if not exists instead of exception
+
 ### 0.1.12
 - fix: delete method now return {_}
 
