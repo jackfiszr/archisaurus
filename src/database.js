@@ -172,7 +172,7 @@ const Database = class {
 			throw new Error(`start transaction before doing delete`)
 		}
 		this.__transactionsData[_] = { collection, record: { _ }, delete: true }
-		
+
 		return this.__transactionsData[record._].record
 	}
 
