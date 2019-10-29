@@ -1,15 +1,16 @@
 {
   "name": "archivarius",
-  "version": "0.1.0",
+  "version": "0.1.12",
   "description": "high performance and dependency free database for microservices",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --exec \"npm run build && node dist/dev.js\"",
+    "start": "nodemon --exec \"npm run build && node dist/server.js\"",
     "build": "rm -rf dist && babel ./src/ -d ./dist/",
-
-    "test": "nodemon --config test/nodemon.json --exec \"npm run test-start\"",
+    "test": "nodemon --exec \"npm run build && npm run test-reset && mocha\"",
     "test-reset": "rm -rf test/.local && mkdir test/.local && mkdir test/.local/test0 && mkdir test/.local/test1 && mkdir test/.local/test2",
-    "test-start": "npm run test-reset && mocha"
+    "minor": "publicarius minor",
+    "major": "publicarius major",
+    "release": "publicarius release"
   },
   "repository": {
     "type": "git",
@@ -30,16 +31,7 @@
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "mocha": "^6.2.2",
-    "nodemon": "^1.19.4"
-  },
-  "nodemonConfig": {
-    "verbose": true,
-    "watch": ["src"],
-    "delay": 500
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
+    "nodemon": "^1.19.4",
+    "publicarius": "0.0.9"
   }
 }

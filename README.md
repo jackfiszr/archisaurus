@@ -9,7 +9,7 @@ Fast and reliable file based database for microservices
 good enough to handle 100+ mln records per collection
 
   
-##Highlights
+## Highlights
 
 - synchronous — yep, to much chaos in this world and sometimes we need to get back in sync 
 - reliable — you can hard switch off server and this will be fine handled 
@@ -48,7 +48,10 @@ const storageDir = `${__dirname}/../archivarius`
 
 const db = new Archivarius(collections, storageDir)
 
-const userNew = { username: 'john', password: '555555'}
+const userNew = { 
+  username: 'john', 
+  password: '555555'
+}
 
 // every data changing operation should be wrapped in transaction
 // option 1 - callback
@@ -76,6 +79,7 @@ db.transactionsCommit()
 
 const query = { username: 'john' }
 const users = db.search('users', query)
+
 db.delete('users', users[0]._)
 ```
  
@@ -88,6 +92,9 @@ db.delete('users', users[0]._)
  
 ## Changelog
 
+### 0.1.12
+- fix: delete method now return {_}
+
 ### 0.1.0 
 - transactions hooks
 
@@ -96,5 +103,6 @@ db.delete('users', users[0]._)
 - bug fixes
 - tests
 - development tools improvements
+
 ### 0.0.8
  - readme updates and some refactoring 

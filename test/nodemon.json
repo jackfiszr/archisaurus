@@ -1,5 +1,0 @@
-{
-  "verbose": false,
-  "watch": ["test", "dist"],
-  "delay": 1000
-}

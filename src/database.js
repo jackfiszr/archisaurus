@@ -5,7 +5,6 @@ import fs from 'fs'
 
 const Database = class {
 	constructor(collections = {}, storageDir = `${__dirname}/.local`) {
-
 		this.__collections = collections
 		this.__storageDir = storageDir
 
@@ -75,7 +74,7 @@ const Database = class {
 				this.transactionsCommit()
 				afterCommit && afterCommit()
 			} catch (e) {
-				//console.error(e)
+				console.error(e)
 				this.transactionsRollback()
 				throw new Error(e)
 			}
@@ -112,14 +111,17 @@ const Database = class {
 		if (this.__transactionsDepth === 0) {
 			throw new Error(`start transaction before doing post`)
 		}
+
 		if (!this.__collections[collection]) {
-			//console.table(this.__collections)
 			throw new Error(`collection ${collection} not exists`)
 		}
-		const doAfter = this.__collections[collection].onPost(this, record)
+
 		record._ = this.__getNextGuid()
+
+		const doAfter = this.__collections[collection].onPost(this, record)
 		this.__transactionsData[record._] = { collection, record }
 		doAfter && doAfter(this, { ...record })
+
 		return record
 	}
 
@@ -130,6 +132,7 @@ const Database = class {
 		const doAfter = this.__collections[collection].onPut(this, record)
 		this.__transactionsData[record._] = { collection, record }
 		doAfter && doAfter(this, { ...record })
+
 		return this.__transactionsData[record._].record
 	}
 
@@ -148,6 +151,7 @@ const Database = class {
 		const doAfter = this.__collections[collection].onPut(this, record)
 		this.__transactionsData[record._] = { collection, record: recordPatch }
 		doAfter && doAfter(this, { ...recordPatch })
+
 		return this.__transactionsData[record._].record
 	}
 
@@ -168,7 +172,10 @@ const Database = class {
 			throw new Error(`start transaction before doing delete`)
 		}
 		this.__transactionsData[_] = { collection, record: { _ }, delete: true }
+
+		return this.__transactionsData[record._].record
 	}
+
 
 	filter(collection, filter = () => true) {
 		return Object.values(this.__data[collection]).filter(filter)

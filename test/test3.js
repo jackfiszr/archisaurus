@@ -20,7 +20,7 @@ db.transactionsStart(() => {
 describe('hooks', function() {
 	describe('constructor', function() {
 		it('should create folders and setup basic environment', function() {
-			console.table(db.search('coupons'))
+			//console.table(db.search('coupons'))
 			assert.equal(true, true)
 		})
 	})
