@@ -194,7 +194,7 @@ const Database = class {
 		const indexesFileName = `${this.__storageDir}/indexes/index.json`
 
 		if (!fs.existsSync(this.__storageDir)) {
-			throw new Error(`folder ${this.__storageDir} not exists`)
+			fs.mkdirSync(`${this.__storageDir}`)
 		}
 
 		if (!fs.existsSync(`${this.__storageDir}/collections`)) {
