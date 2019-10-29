@@ -148,9 +148,10 @@ function () {
         throw new Error("collection ".concat(collection, " not exists"));
       }
 
+      record._ = this.__getNextGuid();
+
       var doAfter = this.__collections[collection].onPost(this, record);
 
-      record._ = this.__getNextGuid();
       this.__transactionsData[record._] = {
         collection: collection,
         record: record
@@ -222,6 +223,7 @@ function () {
         },
         "delete": true
       };
+      return this.__transactionsData[record._].record;
     }
   }, {
     key: "filter",
@@ -251,7 +253,7 @@ function () {
       var indexesFileName = "".concat(this.__storageDir, "/indexes/index.json");
 
       if (!_fs["default"].existsSync(this.__storageDir)) {
-        throw new Error("folder ".concat(this.__storageDir, " not exists"));
+        _fs["default"].mkdirSync("".concat(this.__storageDir));
       }
 
       if (!_fs["default"].existsSync("".concat(this.__storageDir, "/collections"))) {
