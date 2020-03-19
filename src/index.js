@@ -1,5 +1,5 @@
-import { Database } from './database'
+import { Database } from "./database";
 
 module.exports = {
-	Archivarius: Database,
-}
+  Archivarius: Database
+};

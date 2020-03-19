@@ -1,1 +1,1 @@
-console.log('archivarius dev')
+console.log("archivarius dev");
