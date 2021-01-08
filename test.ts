@@ -57,3 +57,15 @@ test({
     dropDb();
   },
 });
+
+test({
+  name: "createDb() can customize db directory",
+  fn: () => {
+    const customOptions = { dbDir: "store" };
+    assert(!existsSync(customOptions.dbDir));
+    const dbWithCustomDir = createDb(customOptions);
+    dbWithCustomDir.createRecord(testRecord);
+    assert(existsSync(customOptions.dbDir));
+    dropDb();
+  },
+});
