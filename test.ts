@@ -3,7 +3,7 @@ import { existsSync, join } from "./deps.ts";
 import { createRecord } from "./mod.ts";
 
 function dropDb() {
-  Deno.remove("db", { recursive: true });
+  Deno.removeSync("db", { recursive: true });
 }
 
 test({
