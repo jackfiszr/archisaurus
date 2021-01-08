@@ -4,5 +4,5 @@ import config from "./config.ts";
 export function createRecord(record: { [key: string]: unknown }) {
   ensureDirSync(config.dbDir);
   const filePath = join(config.dbDir, `${record.id}.json`);
-  Deno.writeTextFileSync(filePath, "{}");
+  Deno.writeTextFileSync(filePath, JSON.stringify(record));
 }
