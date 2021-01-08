@@ -1,6 +1,6 @@
 import { assert, assertEquals, assertThrows, test } from "./test_deps.ts";
 import { existsSync, join } from "./deps.ts";
-import { createRecord } from "./mod.ts";
+import { createDb } from "./mod.ts";
 import config from "./config.ts";
 
 function dropDb() {
@@ -15,10 +15,12 @@ const testRecord = {
 };
 const testFilePath = join(config.dbDir, `${testRecord.id}.json`);
 
+const db = createDb(config);
+
 test({
   name: "createRecord() creates a file with correct name",
   fn: () => {
-    createRecord(testRecord);
+    db.createRecord(testRecord);
     assert(existsSync(testFilePath));
     dropDb();
   },
@@ -27,7 +29,7 @@ test({
 test({
   name: "createRecord() creates a file with parsable contents",
   fn: () => {
-    createRecord(testRecord);
+    db.createRecord(testRecord);
     JSON.parse(Deno.readTextFileSync(testFilePath));
     dropDb();
   },
@@ -36,7 +38,7 @@ test({
 test({
   name: "createRecord() creates a file with correct contents",
   fn: () => {
-    createRecord(testRecord);
+    db.createRecord(testRecord);
     const testFileContents = JSON.parse(Deno.readTextFileSync(testFilePath));
     assertEquals(testFileContents, testRecord);
     dropDb();
@@ -50,7 +52,7 @@ test({
       val: "test_value",
     };
     assertThrows(() => {
-      createRecord(recordWithNoId);
+      db.createRecord(recordWithNoId);
     });
     dropDb();
   },
