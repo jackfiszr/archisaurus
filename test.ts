@@ -1,10 +1,12 @@
-import { assert, assertEquals, test } from "./test_deps.ts";
+import { assert, assertEquals, assertThrows, test } from "./test_deps.ts";
 import { existsSync, join } from "./deps.ts";
 import { createRecord } from "./mod.ts";
 import config from "./config.ts";
 
 function dropDb() {
-  Deno.removeSync(config.dbDir, { recursive: true });
+  if (existsSync(config.dbDir)) {
+    Deno.removeSync(config.dbDir, { recursive: true });
+  }
 }
 
 const testRecord = {
@@ -37,6 +39,19 @@ test({
     createRecord(testRecord);
     const testFileContents = JSON.parse(Deno.readTextFileSync(testFilePath));
     assertEquals(testFileContents, testRecord);
+    dropDb();
+  },
+});
+
+test({
+  name: "createRecord() throws if record does not contain `id` property",
+  fn: () => {
+    const recordWithNoId = {
+      val: "test_value",
+    };
+    assertThrows(() => {
+      createRecord(recordWithNoId);
+    });
     dropDb();
   },
 });
