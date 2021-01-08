@@ -1,11 +1,11 @@
 import { assert, assertEquals, assertThrows, test } from "./test_deps.ts";
 import { existsSync, join } from "./deps.ts";
 import { createDb } from "./mod.ts";
-import config from "./config.ts";
+import defaultConfig from "./config.ts";
 
 function dropDb() {
-  if (existsSync(config.dbDir)) {
-    Deno.removeSync(config.dbDir, { recursive: true });
+  if (existsSync(defaultConfig.dbDir)) {
+    Deno.removeSync(defaultConfig.dbDir, { recursive: true });
   }
 }
 
@@ -13,9 +13,9 @@ const testRecord = {
   id: "test_record",
   val: "test_value",
 };
-const testFilePath = join(config.dbDir, `${testRecord.id}.json`);
+const testFilePath = join(defaultConfig.dbDir, `${testRecord.id}.json`);
 
-const db = createDb(config);
+const db = createDb(defaultConfig);
 
 test({
   name: "createRecord() creates a file with correct name",
