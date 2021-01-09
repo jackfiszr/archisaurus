@@ -9,7 +9,7 @@ const testRecord = {
 };
 const testFilePath = join(defaultConfig.dbDir, `${testRecord.id}.json`);
 
-const db = createDb(defaultConfig);
+const db = createDb();
 
 test({
   name: "createRecord() creates a file with correct name",
