@@ -1,4 +1,4 @@
-import { ensureDirSync, join } from "./deps.ts";
+import { ensureDirSync, existsSync, join } from "./deps.ts";
 import config from "./config.ts";
 
 class Archisaurus {
@@ -11,6 +11,12 @@ class Archisaurus {
     ensureDirSync(this.options.dbDir);
     const filePath = join(this.options.dbDir, `${record.id}.json`);
     Deno.writeTextFileSync(filePath, JSON.stringify(record));
+  }
+
+  dropDb() {
+    if (existsSync(this.options.dbDir)) {
+      Deno.removeSync(this.options.dbDir, { recursive: true });
+    }
   }
 }
 

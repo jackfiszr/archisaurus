@@ -3,12 +3,6 @@ import { existsSync, join } from "./deps.ts";
 import { createDb } from "./mod.ts";
 import defaultConfig from "./config.ts";
 
-function dropDb() {
-  if (existsSync(defaultConfig.dbDir)) {
-    Deno.removeSync(defaultConfig.dbDir, { recursive: true });
-  }
-}
-
 const testRecord = {
   id: "test_record",
   val: "test_value",
@@ -22,7 +16,7 @@ test({
   fn: () => {
     db.createRecord(testRecord);
     assert(existsSync(testFilePath));
-    dropDb();
+    db.dropDb();
   },
 });
 
@@ -31,7 +25,7 @@ test({
   fn: () => {
     db.createRecord(testRecord);
     JSON.parse(Deno.readTextFileSync(testFilePath));
-    dropDb();
+    db.dropDb();
   },
 });
 
@@ -41,7 +35,7 @@ test({
     db.createRecord(testRecord);
     const testFileContents = JSON.parse(Deno.readTextFileSync(testFilePath));
     assertEquals(testFileContents, testRecord);
-    dropDb();
+    db.dropDb();
   },
 });
 
@@ -54,7 +48,7 @@ test({
     assertThrows(() => {
       db.createRecord(recordWithNoId);
     });
-    dropDb();
+    db.dropDb();
   },
 });
 
@@ -66,6 +60,6 @@ test({
     const dbWithCustomDir = createDb(customOptions);
     dbWithCustomDir.createRecord(testRecord);
     assert(existsSync(customOptions.dbDir));
-    dropDb();
+    dbWithCustomDir.dropDb();
   },
 });
