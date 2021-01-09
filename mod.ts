@@ -1,4 +1,4 @@
-import { ensureDirSync, existsSync, join } from "./deps.ts";
+import { Ask, ensureDirSync, existsSync, join } from "./deps.ts";
 import config from "./config.ts";
 
 class Archisaurus {
@@ -13,7 +13,17 @@ class Archisaurus {
     Deno.writeTextFileSync(filePath, JSON.stringify(record));
   }
 
-  dropDb() {
+  async dropDb(sure?: boolean) {
+    if (!sure) {
+      const ask = new Ask();
+      const { answer } = await ask.input({
+        name: "answer",
+        message: "Are you sure you want to delete entire database? (yes/no)",
+      });
+      if (answer.toLowerCase() !== "yes") {
+        return;
+      }
+    }
     if (existsSync(this.options.dbDir)) {
       Deno.removeSync(this.options.dbDir, { recursive: true });
     }

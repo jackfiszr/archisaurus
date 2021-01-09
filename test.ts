@@ -16,7 +16,7 @@ test({
   fn: () => {
     db.createRecord(testRecord);
     assert(existsSync(testFilePath));
-    db.dropDb();
+    db.dropDb(true);
   },
 });
 
@@ -25,7 +25,7 @@ test({
   fn: () => {
     db.createRecord(testRecord);
     JSON.parse(Deno.readTextFileSync(testFilePath));
-    db.dropDb();
+    db.dropDb(true);
   },
 });
 
@@ -35,7 +35,7 @@ test({
     db.createRecord(testRecord);
     const testFileContents = JSON.parse(Deno.readTextFileSync(testFilePath));
     assertEquals(testFileContents, testRecord);
-    db.dropDb();
+    db.dropDb(true);
   },
 });
 
@@ -48,7 +48,7 @@ test({
     assertThrows(() => {
       db.createRecord(recordWithNoId);
     });
-    db.dropDb();
+    db.dropDb(true);
   },
 });
 
@@ -60,6 +60,6 @@ test({
     const dbWithCustomDir = createDb(customOptions);
     dbWithCustomDir.createRecord(testRecord);
     assert(existsSync(customOptions.dbDir));
-    dbWithCustomDir.dropDb();
+    dbWithCustomDir.dropDb(true);
   },
 });
