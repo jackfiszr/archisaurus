@@ -1,4 +1,5 @@
 # Archisaurus
+
 A simple JSON-based local database for Deno
 
 ## Usage
@@ -18,23 +19,27 @@ A simple JSON-based local database for Deno
 
     myDb.createRecord(myItem);
 
-`id` property is required .
+`id` property is required.
 
 ### Running your program
 
     deno run --unstable --allow-read --allow-write my_program.ts
 
 ### Define data model (optional)
-*To-do*
+
+_To-do_
 
 ### Read db record
-*To-do*
+
+_To-do_
 
 ### Update db record
-*To-do*
+
+_To-do_
 
 ### Destroy db record
-*To-do*
+
+_To-do_
 
 ### Delete database
 
@@ -42,7 +47,7 @@ A simple JSON-based local database for Deno
 
     myDb.dropDb();
 
-#### Delete immediately:
+#### or delete immediately:
 
     myDb.dropDb(true);
 
@@ -54,7 +59,7 @@ A simple JSON-based local database for Deno
 
     const customizedDb = createDb(myOptions);
 
-##  Tests
+## Tests
 
     deno test --unstable --allow-read --allow-write https://deno.land/x/archisaurus@v0.0.1/test.ts
 
