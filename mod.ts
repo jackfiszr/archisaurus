@@ -10,7 +10,10 @@ class Archisaurus {
     }
     ensureDirSync(this.options.dbDir);
     const filePath = join(this.options.dbDir, `${record.id}.json`);
-    Deno.writeTextFileSync(filePath, JSON.stringify(record));
+    Deno.writeTextFileSync(
+      filePath,
+      JSON.stringify(record, null, this.options.pretty),
+    );
   }
 
   async dropDb(sure?: boolean) {

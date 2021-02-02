@@ -40,6 +40,16 @@ test({
 });
 
 test({
+  name: "createRecord() saves the file `minified`",
+  fn: () => {
+    db.createRecord(testRecord);
+    const testFileContents = Deno.readTextFileSync(testFilePath);
+    assert(!testFileContents.includes(" "));
+    db.dropDb(true);
+  },
+});
+
+test({
   name: "createRecord() throws if record does not contain `id` property",
   fn: () => {
     const recordWithNoId = {
@@ -61,5 +71,19 @@ test({
     dbWithCustomDir.createRecord(testRecord);
     assert(existsSync(customOptions.dbDir));
     dbWithCustomDir.dropDb(true);
+  },
+});
+
+test({
+  name: "createRecord() can save the file in `pretty` format",
+  fn: () => {
+    const indent = Math.floor(Math.random() * 8) + 1;
+    const customOptions = { pretty: indent };
+    const prettyDb = createDb(customOptions);
+    prettyDb.createRecord(testRecord);
+    const expected = JSON.stringify(testRecord, null, indent);
+    const testFileContents = Deno.readTextFileSync(testFilePath);
+    assertEquals(testFileContents, expected);
+    prettyDb.dropDb(true);
   },
 });
