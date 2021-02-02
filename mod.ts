@@ -1,5 +1,5 @@
 import { Ask, ensureDirSync, existsSync, join } from "./deps.ts";
-import defaultConfig from "./config.ts";
+import defaultConfig, { UserConfig } from "./config.ts";
 
 class Archisaurus {
   constructor(public options: typeof defaultConfig) {}
@@ -30,6 +30,6 @@ class Archisaurus {
   }
 }
 
-export function createDb(options = defaultConfig) {
-  return new Archisaurus(options);
+export function createDb(options?: UserConfig) {
+  return new Archisaurus(Object.assign({}, defaultConfig, options));
 }
