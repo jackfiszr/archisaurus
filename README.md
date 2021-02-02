@@ -6,7 +6,7 @@ A simple JSON-based local database for Deno
 
 ### Import and initialization
 
-    import { createDb } from "https://deno.land/x/archisaurus@v0.0.1/mod.ts";
+    import { createDb } from "https://deno.land/x/archisaurus@v0.0.2/mod.ts";
 
     const myDb = createDb();
 
@@ -55,13 +55,14 @@ _To-do_
 
     const myOptions = {
       dbDir: "my/nested/dir",
+      pretty: 4, // saves db file in pretty format, number of spaces to indent
     };
 
     const customizedDb = createDb(myOptions);
 
 ## Tests
 
-    deno test --unstable --allow-read --allow-write https://deno.land/x/archisaurus@v0.0.1/test.ts
+    deno test --unstable --allow-read --allow-write https://deno.land/x/archisaurus@v0.0.2/test.ts
 
 ## Licence
 
